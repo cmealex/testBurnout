@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Test interactiv de evaluare finală - Burnout profesional">
+    <title>Test Evaluare Burnout | Simion Alexandru</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== VARIABLES & RESET ===== */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        
+        /* ===== HEADER ===== */
+        .test-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .test-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .test-header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* ===== INSTRUCTIONS ===== */
+        .instructions {
+            background: var(--light);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem;
+            border-radius: var(--radius);
+        }
+        
+        .instructions h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* ===== PROGRESS ===== */
+        .progress-container {
+            padding: 0 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        /* ===== SECTIONS ===== */
+        .test-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .test-section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title i {
+            font-size: 1.1rem;
+        }
+        
+        /* ===== QUESTIONS ===== */
+        .question-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+        
+        .question-container:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .question-number {
+            background: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .question-text {
+            flex-grow: 1;
+            margin-left: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* ===== MULTIPLE CHOICE ===== */
+        .options-container {
+            margin-left: 3rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        
+        .option:hover {
+            background: rgba(37, 99, 235, 0.05);
+            border-color: var(--gray-light);
+        }
+        
+        .option.selected {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* ===== CONTROLS ===== */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: var(--light);
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d9e3;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* ===== RESULTS ===== */
+        .results-container {
+            padding: 2rem;
+            background: white;
+            display: none;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 0%, var(--gray-light) 0% 100%);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-pass {
+            color: var(--secondary);
+        }
+        
+        .score-fail {
+            color: var(--danger);
+        }
+        
+        .feedback-message {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: var(--radius);
+            background: var(--light);
+        }
+        
+        /* ===== ANSWER DETAILS ===== */
+        .answer-details {
+            margin-top: 2rem;
+        }
+        
+        .answer-item {
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--gray);
+        }
+        
+        .answer-item.correct {
+            border-left-color: var(--secondary);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .answer-item.incorrect {
+            border-left-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        
+        .answer-question {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .answer-status {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .status-correct {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .status-incorrect {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .user-answer, .correct-answer {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .explanation {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: var(--radius);
+            font-style: italic;
+            color: var(--gray);
+        }
+        
+        /* ===== UTILITY CLASSES ===== */
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .test-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .test-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .question-header {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .question-number {
+                align-self: flex-start;
+            }
+            
+            .question-text {
+                margin-left: 0;
+            }
+            
+            .options-container {
+                margin-left: 0;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .controls,
+            .progress-container,
+            .btn {
+                display: none !important;
+            }
+            
+            .results-container {
+                display: block !important;
+            }
+            
+            .question-container {
+                break-inside: avoid;
+                border: 1px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" role="main">
+        <!-- HEADER -->
+        <header class="test-header">
+            <h1>Evaluare Finală - Burnout Profesional</h1>
+            <p class="subtitle">Test interactiv de verificare a cunoștințelor</p>
+        </header>
+
+        <!-- INSTRUCTIONS -->
+        <section class="instructions" aria-labelledby="instructions-title">
+            <h2 id="instructions-title"><i class="fas fa-info-circle"></i> Instrucțiuni de completare</h2>
+            <p>Completează toate întrebările pentru a-ți evalua cunoștințele despre burnout. Testul conține 13 întrebări, toate cu variante de răspuns. Poți reveni și modifica răspunsurile înainte de trimitere.</p>
+            <p><strong>Scor minim de trecere:</strong> 7 puncte din 13 (54%)</p>
+        </section>
+
+        <!-- PROGRESS -->
+        <div class="progress-container">
+            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressCurrent">0</span>/<span id="progressTotal">13</span> întrebări completate
+            </div>
+        </div>
+
+        <!-- TEST FORM -->
+        <form id="testForm" novalidate>
+            <!-- SECTION 1: Multiple Choice -->
+            <section class="test-section" aria-labelledby="section1-title">
+                <h2 id="section1-title" class="section-title"><i class="fas fa-list-ol"></i> Partea I - Alegere multiplă</h2>
+                
+                <div class="question-container" data-question="1">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <div class="question-text">Care sunt cele trei dimensiuni ale burnout-ului după modelul Maslach?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q1" value="a" aria-label="Opțiunea A">
+                            <span>a) Stres, anxietate, depresie</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="b" aria-label="Opțiunea B">
+                            <span>b) Epuizare emoțională, depersonalizare, reducerea performanței personale</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="c" aria-label="Opțiunea C">
+                            <span>c) Frustrare, insomnie, agresivitate</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="d" aria-label="Opțiunea D">
+                            <span>d) Oboseală cronică, pierdere memorie, izolare</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="2">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Care dintre următoarele este un factor de risc ORGANIZAȚIONAL pentru burnout?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q2" value="a" aria-label="Opțiunea A">
+                            <span>a) Perfecționism excesiv</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="b" aria-label="Opțiunea B">
+                            <span>b) Lipsa feedback-ului pozitiv</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="c" aria-label="Opțiunea C">
+                            <span>c) Dificultăți în stabilirea limitelor</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="d" aria-label="Opțiunea D">
+                            <span>d) Istoric de anxietate</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="3">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <div class="question-text">Ce înseamnă „depersonalizarea” în contextul burnout-ului?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q3" value="a" aria-label="Opțiunea A">
+                            <span>a) Pierderea interesului pentru orice activitate</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="b" aria-label="Opțiunea B">
+                            <span>b) Atitudine rece, cinică sau detașată față de colegi/clienți</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="c" aria-label="Opțiunea C">
+                            <span>c) Scăderea productivității la locul de muncă</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="d" aria-label="Opțiunea D">
+                            <span>d) Oboseală fizică constantă</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="4">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <div class="question-text">Care dintre următoarele este o strategie INDIVIDUALĂ de gestionare a burnout-ului?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q4" value="a" aria-label="Opțiunea A">
+                            <span>a) Cultura feedback-ului constructiv</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="b" aria-label="Opțiunea B">
+                            <span>b) Programe de well-being organizaționale</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="c" aria-label="Opțiunea C">
+                            <span>c) Setarea limitelor clare între viața profesională și personală</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="d" aria-label="Opțiunea D">
+                            <span>d) Flexibilitate în program</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="5">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <div class="question-text">Modelul „Job Demands-Resources” (JD-R) explică burnout-ul ca rezultat al:</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q5" value="a" aria-label="Opțiunea A">
+                            <span>a) Unui conflict între valori personale și organizaționale</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="b" aria-label="Opțiunea B">
+                            <span>b) Cerințelor jobului care depășesc resursele disponibile</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="c" aria-label="Opțiunea C">
+                            <span>c) Lipsei de recunoaștere financiară</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="d" aria-label="Opțiunea D">
+                            <span>d) Presiunii sociale din mediul de lucru</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: True/False -->
+            <section class="test-section" aria-labelledby="section2-title">
+                <h2 id="section2-title" class="section-title"><i class="fas fa-check-circle"></i> Partea II - Adevărat sau Fals</h2>
+                
+                <div class="question-container" data-question="6">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <div class="question-text">Burnout-ul este recunoscut de OMS ca sindrom legat de stresul cronic la locul de muncă.</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q6" value="true" aria-label="Adevărat">
+                            <span>A (Adevărat)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="false" aria-label="Fals">
+                            <span>F (Fals)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="7">
+                    <div class="question-header">
+                        <div class="question-number">7</div>
+                        <div class="question-text">Burnout-ul apare doar la persoanele cu predispoziție genetică.</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q7" value="true" aria-label="Adevărat">
+                            <span>A (Adevărat)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="false" aria-label="Fals">
+                            <span>F (Fals)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="8">
+                    <div class="question-header">
+                        <div class="question-number">8</div>
+                        <div class="question-text">Mindfulness-ul și respirația conștientă pot fi tehnici utile în prevenirea burnout-ului.</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q8" value="true" aria-label="Adevărat">
+                            <span>A (Adevărat)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="false" aria-label="Fals">
+                            <span>F (Fals)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="9">
+                    <div class="question-header">
+                        <div class="question-number">9</div>
+                        <div class="question-text">Burnout-ul afectează doar performanța profesională, nu și cea personală.</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q9" value="true" aria-label="Adevărat">
+                            <span>A (Adevărat)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="false" aria-label="Fals">
+                            <span>F (Fals)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-container" data-question="10">
+                    <div class="question-header">
+                        <div class="question-number">10</div>
+                        <div class="question-text">Un semn de alarmă timpuriu este oboseala persistentă chiar și după odihnă.</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q10" value="true" aria-label="Adevărat">
+                            <span>A (Adevărat)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="false" aria-label="Fals">
+                            <span>F (Fals)</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Multiple Choice (continuare) -->
+            <section class="test-section" aria-labelledby="section3-title">
+                <h2 id="section3-title" class="section-title"><i class="fas fa-list-ol"></i> Partea III - Alegere multiplă (continuare)</h2>
+                
+                <!-- Întrebarea 11: Semne de alarmă -->
+                <div class="question-container" data-question="11">
+                    <div class="question-header">
+                        <div class="question-number">11</div>
+                        <div class="question-text">Care dintre următoarele reprezintă semne de alarmă timpurii ale burnout-ului?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q11" value="a" aria-label="Opțiunea A">
+                            <span>a) Oboseală persistentă chiar și după odihnă</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="b" aria-label="Opțiunea B">
+                            <span>b) Entuziasm crescut pentru muncă</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="c" aria-label="Opțiunea C">
+                            <span>c) Îmbunătățirea performanței profesionale</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="d" aria-label="Opțiunea D">
+                            <span>d) Creșterea productivității constante</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Întrebarea 12: Strategii organizaționale -->
+                <div class="question-container" data-question="12">
+                    <div class="question-header">
+                        <div class="question-number">12</div>
+                        <div class="question-text">Care dintre următoarele reprezintă o strategie organizațională de prevenire a burnout-ului?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q12" value="a" aria-label="Opțiunea A">
+                            <span>a) Perfecționism individual crescut</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="b" aria-label="Opțiunea B">
+                            <span>b) Lipsa de feedback de la management</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="c" aria-label="Opțiunea C">
+                            <span>c) Cultura feedback-ului constructiv și continuu</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="d" aria-label="Opțiunea D">
+                            <span>d) Creșterea constantă a orelor de muncă</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Întrebarea 13: Modelul PERMA -->
+                <div class="question-container" data-question="13">
+                    <div class="question-header">
+                        <div class="question-number">13</div>
+                        <div class="question-text">Ce reprezintă acronimul PERMA în modelul lui Seligman pentru bunăstare?</div>
+                    </div>
+                    <div class="options-container">
+                        <label class="option">
+                            <input type="radio" name="q13" value="a" aria-label="Opțiunea A">
+                            <span>a) Problem, Evaluation, Resolution, Management, Action</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="b" aria-label="Opțiunea B">
+                            <span>b) Positive Emotion, Engagement, Relationships, Meaning, Accomplishment</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="c" aria-label="Opțiunea C">
+                            <span>c) Performance, Efficiency, Results, Motivation, Achievement</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="d" aria-label="Opțiunea D">
+                            <span>d) Planning, Execution, Review, Monitoring, Adjustment</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+            <button type="button" class="btn btn-secondary" id="resetBtn" aria-label="Resetează testul">
+                <i class="fas fa-redo"></i> Resetează
+            </button>
+            <button type="button" class="btn btn-primary" id="submitBtn" aria-label="Trimite testul pentru evaluare">
+                <i class="fas fa-paper-plane"></i> Verifică Răspunsurile
+            </button>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results-container" id="resultsSection" aria-labelledby="results-title">
+            <div class="results-header">
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-inner" id="scoreDisplay">0</div>
+                </div>
+                <div class="score-text" id="scoreText">0/13 puncte</div>
+                <div class="feedback-message" id="feedbackMessage"></div>
+            </div>
+
+            <div class="answer-details" id="answerDetails" aria-live="polite">
+                <!-- Dinamic content will be inserted here -->
+            </div>
+
+            <div class="controls">
+                <button type="button" class="btn btn-secondary" id="retryBtn" aria-label="Încearcă din nou">
+                    <i class="fas fa-sync"></i> Încearcă Din Nou
+                </button>
+                <button type="button" class="btn btn-primary" id="printBtn" aria-label="Printează rezultatele">
+                    <i class="fas fa-print"></i> Printează Rezultate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== MODULE PATTERN =====
+        const BurnoutTest = (function() {
+            // ===== PRIVATE VARIABLES =====
+            const STATE_KEY = 'burnout_test_state';
+            const MAX_SCORE = 13;
+            const PASS_SCORE = 7;
+            
+            // ===== ANSWER DATABASE =====
+            const correctAnswers = {
+                q1: 'b',
+                q2: 'b',
+                q3: 'b',
+                q4: 'c',
+                q5: 'b',
+                q6: 'true',
+                q7: 'false',
+                q8: 'true',
+                q9: 'false',
+                q10: 'true',
+                q11: 'a',
+                q12: 'c',
+                q13: 'b'
+            };
+            
+            const explanations = {
+                q1: 'Modelul tripartit al lui Maslach (1981) include trei dimensiuni: epuizare emoțională (resursele emoționale sunt epuizate), depersonalizare (atitudine negativă, impersonală), și reducerea realizării personale (scăderea sentimentului de competență și succes).',
+                q2: 'Factorii organizaționali includ cultura organizațională, politica companiei, stilul de leadership, în timp ce perfecționismul și dificultățile în stabilirea limitelor sunt factori individuali.',
+                q3: 'Depersonalizarea se referă la dezvoltarea unei atitudini negative, cinice sau excesiv de detașate față de cei cărora li se oferă servicii (clienți, pacienți, elevi).',
+                q4: 'Setarea limitelor este o strategie individuală de auto-management. Celelalte opțiuni sunt strategii organizaționale care necesită implicarea liderilor sau a departamentului HR.',
+                q5: 'Modelul Job Demands-Resources (Demerouti et al., 2001) propune că burnout-ul apare atunci când cerințele jobului (fizice, psihologice, sociale) depășesc resursele disponibile (personale și organizaționale).',
+                q6: 'OMS a inclus burnout-ul în ICD-11 (2019) ca "fenomen ocupacional" rezultat din stres cronic la locul de muncă care nu a fost gestionat cu succes.',
+                q7: 'Burnout-ul este un fenomen multifactorial influențat de variabile individuale (personalitate, coping), organizaționale (cultura, leadership) și de mediu (presiune economică, tehnologie).',
+                q8: 'Mindfulness-ul a fost validat științific ca metodă eficientă de reducere a stresului și prevenire a burnout-ului prin îmbunătățirea reglării emoționale.',
+                q9: 'Burnout-ul are efecte negative sistematice care se extind dincolo de sfera profesională, afectând sănătatea fizică, relațiile personale și calitatea vieții în general.',
+                q10: 'Oboseala persistentă care nu dispare după odihnă este un semn cardinal al burnout-ului, diferențiindu-l de oboseala normală sau de sindromul cronic de oboseală.',
+                q11: 'Oboseala persistentă este unul dintre principalele semne de alarmă. Entuziasmul crescut, îmbunătățirea performanței și creșterea productivității sunt semne pozitive, nu de burnout.',
+                q12: 'Cultura feedback-ului constructiv este o strategie organizațională eficientă. Perfecționismul excesiv este individual, iar lipsa feedback-ului și creșterea orelor sunt factori de risc.',
+                q13: 'Modelul PERMA al lui Seligman (2011) descrie cinci elemente esențiale pentru bunăstare: Emoție pozitivă (Positive Emotion), Angajament (Engagement), Relații (Relationships), Sens (Meaning), Realizare (Accomplishment).'
+            };
+            
+            const correctAnswerTexts = {
+                q1: 'b) Epuizare emoțională, depersonalizare, reducerea performanței personale',
+                q2: 'b) Lipsa feedback-ului pozitiv',
+                q3: 'b) Atitudine rece, cinică sau detașată față de colegi/clienți',
+                q4: 'c) Setarea limitelor clare între viața profesională și personală',
+                q5: 'b) Cerințelor jobului care depășesc resursele disponibile',
+                q6: 'A (Adevărat)',
+                q7: 'F (Fals)',
+                q8: 'A (Adevărat)',
+                q9: 'F (Fals)',
+                q10: 'A (Adevărat)',
+                q11: 'a) Oboseală persistentă chiar și după odihnă',
+                q12: 'c) Cultura feedback-ului constructiv și continuu',
+                q13: 'b) Positive Emotion, Engagement, Relationships, Meaning, Accomplishment'
+            };
+            
+            // ===== DOM ELEMENTS =====
+            let dom = {};
+            
+            // ===== STATE MANAGEMENT =====
+            let state = {
+                answers: {},
+                score: 0,
+                completed: false,
+                progress: 0
+            };
+            
+            // ===== INITIALIZATION =====
+            function init() {
+                cacheDOM();
+                loadState();
+                setupEventListeners();
+                updateProgress();
+                updateUI();
+            }
+            
+            function cacheDOM() {
+                dom = {
+                    testForm: document.getElementById('testForm'),
+                    resultsSection: document.getElementById('resultsSection'),
+                    progressFill: document.getElementById('progressFill'),
+                    progressCurrent: document.getElementById('progressCurrent'),
+                    progressTotal: document.getElementById('progressTotal'),
+                    scoreDisplay: document.getElementById('scoreDisplay'),
+                    scoreText: document.getElementById('scoreText'),
+                    scoreCircle: document.getElementById('scoreCircle'),
+                    feedbackMessage: document.getElementById('feedbackMessage'),
+                    answerDetails: document.getElementById('answerDetails'),
+                    submitBtn: document.getElementById('submitBtn'),
+                    resetBtn: document.getElementById('resetBtn'),
+                    retryBtn: document.getElementById('retryBtn'),
+                    printBtn: document.getElementById('printBtn')
+                };
+            }
+            
+            // ===== STATE MANAGEMENT =====
+            function loadState() {
+                const saved = localStorage.getItem(STATE_KEY);
+                if (saved) {
+                    try {
+                        state = JSON.parse(saved);
+                        restoreAnswers();
+                    } catch (e) {
+                        console.error('Error loading saved state:', e);
+                        resetState();
+                    }
+                }
+            }
+            
+            function saveState() {
+                localStorage.setItem(STATE_KEY, JSON.stringify(state));
+            }
+            
+            function resetState() {
+                state = {
+                    answers: {},
+                    score: 0,
+                    completed: false,
+                    progress: 0
+                };
+                saveState();
+            }
+            
+            function restoreAnswers() {
+                Object.keys(state.answers).forEach(questionId => {
+                    const answer = state.answers[questionId];
+                    if (answer) {
+                        const input = document.querySelector(`input[name="${questionId}"][value="${answer}"]`);
+                        if (input) {
+                            input.checked = true;
+                            input.parentElement.classList.add('selected');
+                        }
+                    }
+                });
+                updateProgress();
+            }
+            
+            // ===== PROGRESS TRACKING =====
+            function updateProgress() {
+                let answeredCount = 0;
+                
+                // Count answered questions
+                for (let i = 1; i <= MAX_SCORE; i++) {
+                    const questionId = `q${i}`;
+                    const selected = document.querySelector(`input[name="${questionId}"]:checked`);
+                    if (selected) {
+                        answeredCount++;
+                        state.answers[questionId] = selected.value;
+                    } else {
+                        delete state.answers[questionId];
+                    }
+                }
+                
+                state.progress = answeredCount;
+                dom.progressCurrent.textContent = answeredCount;
+                dom.progressTotal.textContent = MAX_SCORE;
+                
+                const percentage = (answeredCount / MAX_SCORE) * 100;
+                dom.progressFill.style.width = `${percentage}%`;
+                dom.progressFill.setAttribute('aria-valuenow', percentage);
+                
+                // Update submit button state
+                dom.submitBtn.disabled = answeredCount < MAX_SCORE;
+                
+                saveState();
+            }
+            
+            // ===== ANSWER VALIDATION =====
+            function validateAnswer(questionId, userAnswer) {
+                return userAnswer === correctAnswers[questionId];
+            }
+            
+            function getUserAnswer(questionId) {
+                const selected = document.querySelector(`input[name="${questionId}"]:checked`);
+                return selected ? selected.value : null;
+            }
+            
+            // ===== SCORING =====
+            function calculateScore() {
+                let score = 0;
+                
+                for (let i = 1; i <= MAX_SCORE; i++) {
+                    const questionId = `q${i}`;
+                    const userAnswer = getUserAnswer(questionId);
+                    
+                    if (userAnswer && validateAnswer(questionId, userAnswer)) {
+                        score++;
+                    }
+                    
+                    // Save answer to state
+                    state.answers[questionId] = userAnswer;
+                }
+                
+                state.score = score;
+                state.completed = true;
+                saveState();
+                return score;
+            }
+            
+            // ===== UI UPDATES =====
+            function updateUI() {
+                // Update option selection visuals
+                document.querySelectorAll('.option input').forEach(input => {
+                    input.addEventListener('change', function() {
+                        // Remove selected class from siblings
+                        const questionContainer = this.closest('.question-container');
+                        const options = questionContainer.querySelectorAll('.option');
+                        options.forEach(option => option.classList.remove('selected'));
+                        
+                        // Add selected class to parent
+                        this.parentElement.classList.add('selected');
+                        
+                        // Update progress
+                        updateProgress();
+                    });
+                });
+            }
+            
+            function showResults() {
+                const score = calculateScore();
+                const percentage = (score / MAX_SCORE) * 100;
+                
+                // Update score display
+                dom.scoreDisplay.textContent = score;
+                dom.scoreText.textContent = `${score}/${MAX_SCORE} puncte`;
+                dom.scoreText.className = `score-text ${score >= PASS_SCORE ? 'score-pass' : 'score-fail'}`;
+                
+                // Update progress circle
+                dom.scoreCircle.style.background = `conic-gradient(${score >= PASS_SCORE ? 'var(--secondary)' : 'var(--primary)'} 0% ${percentage}%, var(--gray-light) ${percentage}% 100%)`;
+                
+                // Set feedback message
+                let feedback = '';
+                if (score === MAX_SCORE) {
+                    feedback = 'EXCELENT! Ai obținut scorul maxim! Cunoști perfect subiectul burnout-ului.';
+                } else if (score >= PASS_SCORE + 3) {
+                    feedback = 'FOARTE BINE! Ai o înțelegere solidă a burnout-ului și a strategiilor de management.';
+                } else if (score >= PASS_SCORE) {
+                    feedback = 'BINE! Ai trecut testul. Îți recomand să mai revezi capitolele unde ai greșit.';
+                } else {
+                    feedback = 'AI NEVOIE DE MAI MULTĂ PRACTICĂ. Recomand revizuirea integrală a materialului și reluarea testului.';
+                }
+                dom.feedbackMessage.textContent = feedback;
+                
+                // Generate answer details
+                dom.answerDetails.innerHTML = generateAnswerDetails();
+                
+                // Show results section
+                dom.resultsSection.style.display = 'block';
+                dom.resultsSection.classList.add('fade-in');
+                
+                // Scroll to results
+                setTimeout(() => {
+                    dom.resultsSection.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+            
+            function generateAnswerDetails() {
+                let html = '<h3 style="margin-bottom: 1.5rem; color: var(--primary);">Detalii răspunsuri:</h3>';
+                
+                for (let i = 1; i <= MAX_SCORE; i++) {
+                    const questionId = `q${i}`;
+                    const userAnswer = getUserAnswer(questionId);
+                    const isCorrect = userAnswer ? validateAnswer(questionId, userAnswer) : false;
+                    const questionElement = document.querySelector(`[data-question="${i}"] .question-text`);
+                    const questionText = questionElement ? questionElement.textContent : `Întrebarea ${i}`;
+                    
+                    // Format user answer for display
+                    let userAnswerDisplay = '<em>Niciun răspuns selectat</em>';
+                    if (userAnswer) {
+                        const selectedInput = document.querySelector(`input[name="${questionId}"][value="${userAnswer}"]`);
+                        if (selectedInput) {
+                            const optionText = selectedInput.parentElement.querySelector('span').textContent;
+                            userAnswerDisplay = optionText;
+                        }
+                    }
+                    
+                    html += `
+                        <div class="answer-item ${isCorrect ? 'correct' : 'incorrect'}">
+                            <div class="answer-question">
+                                <span>${i}. ${questionText}</span>
+                                <span class="answer-status ${isCorrect ? 'status-correct' : 'status-incorrect'}">
+                                    ${isCorrect ? 'CORECT' : userAnswer ? 'GREȘIT' : 'FĂRĂ RĂSPUNS'}
+                                </span>
+                            </div>
+                            <div class="user-answer">
+                                <strong>Răspunsul tău:</strong> ${userAnswerDisplay}
+                            </div>
+                            ${!isCorrect && userAnswer ? `
+                            <div class="correct-answer">
+                                <strong>Răspuns corect:</strong> ${correctAnswerTexts[questionId]}
+                            </div>
+                            ` : ''}
+                            <div class="explanation">
+                                <strong>Explicație:</strong> ${explanations[questionId]}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                return html;
+            }
+            
+            // ===== EVENT HANDLERS =====
+            function setupEventListeners() {
+                // Submit button
+                dom.submitBtn.addEventListener('click', () => {
+                    const answeredCount = Object.keys(state.answers).length;
+                    if (answeredCount < MAX_SCORE) {
+                        alert(`Completează toate întrebările înainte de a trimite! Mai ai ${MAX_SCORE - answeredCount} întrebări fără răspuns.`);
+                        return;
+                    }
+                    
+                    if (confirm('Ești sigur că vrei să trimiți testul pentru evaluare? Nu vei mai putea modifica răspunsurile.')) {
+                        showResults();
+                    }
+                });
+                
+                // Reset button
+                dom.resetBtn.addEventListener('click', () => {
+                    if (confirm('Sigur vrei să resetezi tot testul? Toate răspunsurile vor fi șterse.')) {
+                        resetTest();
+                    }
+                });
+                
+                // Retry button
+                dom.retryBtn.addEventListener('click', () => {
+                    dom.resultsSection.style.display = 'none';
+                    resetTest();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                
+                // Print button
+                dom.printBtn.addEventListener('click', () => {
+                    window.print();
+                });
+                
+                // Auto-save on change
+                document.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('change', updateProgress);
+                });
+                
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl + Enter to submit
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        e.preventDefault();
+                        dom.submitBtn.click();
+                    }
+                    
+                    // Esc to reset
+                    if (e.key === 'Escape') {
+                        dom.resetBtn.click();
+                    }
+                });
+            }
+            
+            function resetTest() {
+                // Reset form
+                dom.testForm.reset();
+                
+                // Reset visual states
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Reset state
+                resetState();
+                
+                // Reset progress
+                updateProgress();
+                
+                // Hide results
+                dom.resultsSection.style.display = 'none';
+            }
+            
+            // ===== PUBLIC API =====
+            return {
+                init: init,
+                getScore: () => state.score,
+                getProgress: () => state.progress,
+                resetTest: resetTest
+            };
+        })();
+        
+        // ===== INITIALIZE ON LOAD =====
+        document.addEventListener('DOMContentLoaded', () => {
+            BurnoutTest.init();
+            
+            // Accessibility: Focus management
+            const firstInput = document.querySelector('input');
+            if (firstInput) firstInput.focus();
+        });
+    </script>
+</body>
+</html>
